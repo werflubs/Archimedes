@@ -5,15 +5,18 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.History
@@ -42,10 +45,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.R
 import com.example.data.CalculationRepository
-import com.example.ui.theme.CosmicBackground
-import com.example.ui.theme.CosmicPrimary
-import com.example.ui.theme.CosmicText
-import com.example.ui.theme.CosmicTextSecondary
+import com.example.ui.theme.*
 
 @Composable
 fun ArchimedesApp(repository: CalculationRepository) {
@@ -82,42 +82,58 @@ fun MainAppContent(calculatorViewModel: CalculatorViewModel) {
 
     Scaffold(
         bottomBar = {
-            NavigationBar(
-                containerColor = CosmicBackground,
-                contentColor = CosmicText
+            Box(
+                modifier = Modifier
+                    .background(CosmicBackground)
+                    .navigationBarsPadding()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                val screens = listOf(
-                    Triple("calculator", "Калькулятор", Icons.Default.Calculate),
-                    Triple("converter", "Конвертер", Icons.Default.SwapHoriz),
-                    Triple("history", "История", Icons.Default.History),
-                    Triple("about", "О программе", Icons.Default.Info)
-                )
-                
-                screens.forEach { (route, label, icon) ->
-                    val selected = currentRoute == route
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            if (!selected) {
-                                navController.navigate(route) {
-                                    popUpTo("calculator") { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        },
-                        icon = { 
-                            Icon(imageVector = icon, contentDescription = label)
-                        },
-                        label = { Text(label) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = CosmicPrimary,
-                            unselectedIconColor = CosmicTextSecondary,
-                            selectedTextColor = CosmicPrimary,
-                            unselectedTextColor = CosmicTextSecondary,
-                            indicatorColor = MaterialTheme.colorScheme.surface
+                NavigationBar(
+                    containerColor = CosmicSurface,
+                    contentColor = CosmicText,
+                    tonalElevation = 0.dp,
+                    modifier = Modifier
+                        .height(64.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .border(
+                            1.dp,
+                            androidx.compose.ui.graphics.Color.White.copy(alpha = 0.08f),
+                            RoundedCornerShape(20.dp)
                         )
+                ) {
+                    val screens = listOf(
+                        Triple("calculator", "Вычисления", Icons.Default.Calculate),
+                        Triple("converter", "Конвертер", Icons.Default.SwapHoriz),
+                        Triple("history", "История", Icons.Default.History),
+                        Triple("about", "Инфо", Icons.Default.Info)
                     )
+                    
+                    screens.forEach { (route, label, icon) ->
+                        val selected = currentRoute == route
+                        NavigationBarItem(
+                            selected = selected,
+                            onClick = {
+                                if (!selected) {
+                                    navController.navigate(route) {
+                                        popUpTo("calculator") { saveState = true }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                            },
+                            icon = { 
+                                Icon(imageVector = icon, contentDescription = label)
+                            },
+                            label = { Text(label, fontSize = 11.sp, fontWeight = FontWeight.Medium) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = CosmicPrimary,
+                                unselectedIconColor = CosmicTextSecondary,
+                                selectedTextColor = CosmicPrimary,
+                                unselectedTextColor = CosmicTextSecondary,
+                                indicatorColor = CosmicSecondary
+                            )
+                        )
+                    }
                 }
             }
         }

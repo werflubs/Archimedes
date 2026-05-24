@@ -6,7 +6,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -30,7 +33,7 @@ val unitsMap = mapOf(
     "Температура" to listOf("Цельсий", "Фаренгейт", "Кельвин"),
     "Объем" to listOf("Литры", "Милилитры", "Галлоны"),
     "Масса" to listOf("Килограммы", "Граммы", "Тонны", "Фунты"),
-    "Данные" to listOf("Байт", "Кб", "Мб", "Гб", "Тб"),
+    "Данные" to listOf("Бит", "Байт", "Кб", "Мб", "Гб", "Тб"),
     "Скорость" to listOf("Км/ч", "М/с", "Мили/ч"),
     "Время" to listOf("Секунды", "Минуты", "Часы", "Дни"),
     "Чаевые" to listOf("Сумма счета", "Процент чаевых", "Количество персон")
@@ -140,9 +143,27 @@ fun ConverterScreen() {
                     }
                 }
             } else {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Box(modifier = Modifier.weight(1f)) {
                         DropdownMenuSelector("Из", unitsMap[selectedCategory]!!, selectedUnitFrom) { selectedUnitFrom = it }
+                    }
+                    IconButton(
+                        onClick = {
+                            val temp = selectedUnitFrom
+                            selectedUnitFrom = selectedUnitTo
+                            selectedUnitTo = temp
+                        },
+                        modifier = Modifier.padding(top = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.SwapHoriz,
+                            contentDescription = "Поменять местами",
+                            tint = CosmicPrimary
+                        )
                     }
                     Box(modifier = Modifier.weight(1f)) {
                         DropdownMenuSelector("В", unitsMap[selectedCategory]!!, selectedUnitTo) { selectedUnitTo = it }
@@ -163,13 +184,19 @@ fun ConverterScreen() {
                     modifier = Modifier.fillMaxWidth()
                 )
                 
-                Card(colors = CardDefaults.cardColors(containerColor = CosmicSurface), modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Результат", color = CosmicTextSecondary, fontSize = 14.sp)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(outputValue, color = CosmicPrimary, fontSize = 24.sp)
-                    }
-                }
+                OutlinedTextField(
+                    value = outputValue,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Результат", color = CosmicTextSecondary) },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = CosmicPrimary,
+                        unfocusedTextColor = CosmicPrimary,
+                        focusedBorderColor = CosmicPrimary,
+                        unfocusedBorderColor = CosmicTextSecondary
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
@@ -261,6 +288,7 @@ private fun convert(valueStr: String, category: String, from: String, to: String
             else -> param
         }
         "Данные" -> when(from) {
+            "Бит" -> param / 8.0
             "Байт" -> param
             "Кб" -> param * 1024
             "Мб" -> param * 1024 * 1024
@@ -319,6 +347,7 @@ private fun convert(valueStr: String, category: String, from: String, to: String
             else -> baseValue
         }
         "Данные" -> when(to) {
+            "Бит" -> baseValue * 8.0
             "Байт" -> baseValue
             "Кб" -> baseValue / 1024
             "Мб" -> baseValue / (1024 * 1024)

@@ -28,7 +28,23 @@ private val DarkColorScheme =
 
 @Composable
 fun MyApplicationTheme(
+  dynamicColor: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  MaterialTheme(colorScheme = DarkColorScheme, typography = Typography, content = content)
+  val colorScheme = if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    val context = LocalContext.current
+    val dynamicScheme = dynamicDarkColorScheme(context)
+    dynamicScheme.copy(
+      background = CosmicBackground,
+      surface = CosmicSurface,
+      surfaceVariant = CosmicSurfaceVariant,
+      onBackground = CosmicText,
+      onSurface = CosmicText,
+      onSurfaceVariant = CosmicTextSecondary
+    )
+  } else {
+    DarkColorScheme
+  }
+
+  MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
 }

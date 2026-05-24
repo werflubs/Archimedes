@@ -49,13 +49,22 @@ fun CalculatorScreen(viewModel: CalculatorViewModel) {
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
+            
+            val displayText = result.ifEmpty { expression.ifEmpty { "0" } }
+            val displayFontSize = when {
+                displayText.length > 18 -> 26.sp
+                displayText.length > 14 -> 34.sp
+                displayText.length > 10 -> 42.sp
+                else -> 52.sp
+            }
+            
             Text(
-                text = result.ifEmpty { expression.ifEmpty { "0" } },
-                fontSize = 56.sp,
-                fontWeight = FontWeight.Light,
+                text = displayText,
+                fontSize = displayFontSize,
+                fontWeight = FontWeight.Normal,
                 color = androidx.compose.ui.graphics.Color.White,
+                lineHeight = (displayFontSize.value * 1.2f).sp,
                 textAlign = TextAlign.End,
-                letterSpacing = (-2).sp,
                 modifier = Modifier.fillMaxWidth()
             )
         }
