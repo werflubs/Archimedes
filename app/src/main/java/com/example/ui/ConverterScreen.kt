@@ -7,7 +7,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -155,7 +154,7 @@ fun ConverterScreen() {
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.SwapHoriz,
+                            imageVector = AppIcons.SwapHoriz,
                             contentDescription = "Поменять местами",
                             tint = MaterialTheme.colorScheme.primary
                         )

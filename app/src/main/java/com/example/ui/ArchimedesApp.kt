@@ -18,11 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Calculate
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.SyncAlt
-import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -102,9 +98,9 @@ fun MainAppContent(calculatorViewModel: CalculatorViewModel) {
                         )
                 ) {
                     val screens = listOf(
-                        Triple("calculator", "Вычисления", Icons.Default.Calculate),
-                        Triple("converter", "Конвертер", Icons.Default.SwapHoriz),
-                        Triple("history", "История", Icons.Default.History),
+                        Triple("calculator", "Вычисления", AppIcons.Calculate),
+                        Triple("converter", "Конвертер", AppIcons.SwapHoriz),
+                        Triple("history", "История", AppIcons.History),
                         Triple("about", "Инфо", Icons.Default.Info)
                     )
                     
