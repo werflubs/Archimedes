@@ -57,10 +57,14 @@ object MathUtils {
 
         fun parseTerm(): Double {
             var left = parsePrimary()
-            while (tokenList.isNotEmpty() && (tokenList.first() == "*" || tokenList.first() == "/")) {
+            while (tokenList.isNotEmpty() && (tokenList.first() == "*" || tokenList.first() == "/" || tokenList.first() == "%")) {
                 val op = tokenList.removeAt(0)
                 val right = parsePrimary()
-                left = if (op == "*") left * right else left / right
+                left = when (op) {
+                    "*" -> left * right
+                    "/" -> left / right
+                    else -> left % right
+                }
             }
             return left
         }

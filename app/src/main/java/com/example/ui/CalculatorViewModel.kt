@@ -43,7 +43,40 @@ class CalculatorViewModel(
             }
             "=" -> calculateResult()
             else -> {
-                _expression.value += action
+                val operators = listOf("÷", "×", "-", "+", "%")
+                
+                if (action in operators) {
+                    val exp = _expression.value
+                    if (exp.isNotEmpty()) {
+                        val lastChar = exp.last().toString()
+                        if (lastChar in operators) {
+                            _expression.value = exp.dropLast(1) + action
+                        } else if (lastChar == ".") {
+                            _expression.value = exp.dropLast(1) + action
+                        } else {
+                            _expression.value += action
+                        }
+                    } else if (action == "-") {
+                        _expression.value += action
+                    }
+                } else if (action == ".") {
+                    val exp = _expression.value
+                    if (exp.isEmpty()) {
+                        _expression.value = "0."
+                    } else {
+                        val lastChar = exp.last().toString()
+                        if (lastChar in operators) {
+                            _expression.value += "0."
+                        } else if (lastChar != ".") {
+                            val lastNumber = exp.split(Regex("[÷×\\-+%]")).last()
+                            if (!lastNumber.contains(".")) {
+                                _expression.value += action
+                            }
+                        }
+                    }
+                } else {
+                    _expression.value += action
+                }
                 updatePreview()
             }
         }
