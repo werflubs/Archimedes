@@ -22,14 +22,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.CosmicBackground
-import com.example.ui.theme.CosmicPrimary
-import com.example.ui.theme.CosmicSurface
-import com.example.ui.theme.CosmicSurfaceVariant
-import com.example.ui.theme.CosmicText
-import com.example.ui.theme.CosmicTextSecondary
-import com.example.ui.theme.CosmicTextVariant
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen() {
@@ -38,11 +30,11 @@ fun AboutScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("О программе", color = CosmicText) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = CosmicBackground)
+                title = { Text("О программе", color = MaterialTheme.colorScheme.onBackground) },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = CosmicBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -54,7 +46,7 @@ fun AboutScreen() {
         ) {
             Card(
                 shape = RoundedCornerShape(28.dp),
-                colors = CardDefaults.cardColors(containerColor = CosmicSurfaceVariant),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .fillMaxWidth()
                     .border(1.dp, Color.White.copy(alpha = 0.05f), RoundedCornerShape(28.dp))
@@ -70,13 +62,13 @@ fun AboutScreen() {
                                 "ABOUT PROGRAM",
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = CosmicPrimary,
+                                color = MaterialTheme.colorScheme.primary,
                                 letterSpacing = 1.sp
                             )
                             Text(
-                                "v1.0.0 • Kotlin • Jetpack Compose",
+                                "v1.1.0 • Kotlin • Jetpack Compose",
                                 fontSize = 10.sp,
-                                color = CosmicTextSecondary
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                         
@@ -86,7 +78,7 @@ fun AboutScreen() {
                                 .size(32.dp)
                                 .background(
                                     brush = Brush.linearGradient(
-                                        colors = listOf(CosmicPrimary, com.example.ui.theme.CosmicOnPrimary)
+                                        colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
                                     ),
                                     shape = RoundedCornerShape(12.dp)
                                 )
@@ -97,13 +89,13 @@ fun AboutScreen() {
                     
                     val annotatedString = buildAnnotatedString {
                         append(" Built with ")
-                        withStyle(style = SpanStyle(color = CosmicPrimary)) {
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                             append("Gemini 3.1 Pro Preview")
                         }
                         append(". Licensed under MIT.\nAuthored by ")
                         // we push a string annotation to track clicks.
                         pushStringAnnotation(tag = "URL", annotation = "https://github.com/werflubs")
-                        withStyle(style = SpanStyle(color = CosmicPrimary, textDecoration = TextDecoration.Underline)) {
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary, textDecoration = TextDecoration.Underline)) {
                             append("werflub")
                         }
                         pop()
@@ -113,7 +105,7 @@ fun AboutScreen() {
                     ClickableText(
                         text = annotatedString,
                         style = androidx.compose.ui.text.TextStyle(
-                            color = CosmicTextVariant,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 12.sp,
                             lineHeight = 18.sp
                         ),

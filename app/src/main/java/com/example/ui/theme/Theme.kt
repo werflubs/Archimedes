@@ -33,15 +33,7 @@ fun MyApplicationTheme(
 ) {
   val colorScheme = if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
     val context = LocalContext.current
-    val dynamicScheme = dynamicDarkColorScheme(context)
-    dynamicScheme.copy(
-      background = CosmicBackground,
-      surface = CosmicSurface,
-      surfaceVariant = CosmicSurfaceVariant,
-      onBackground = CosmicText,
-      onSurface = CosmicText,
-      onSurfaceVariant = CosmicTextSecondary
-    )
+    dynamicDarkColorScheme(context)
   } else {
     DarkColorScheme
   }

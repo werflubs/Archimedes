@@ -63,7 +63,7 @@ fun ArchimedesApp(repository: CalculationRepository) {
     
     val calculatorViewModel: CalculatorViewModel = viewModel(factory = factory)
 
-    Box(modifier = Modifier.fillMaxSize().background(CosmicBackground)) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         if (showSplash) {
             SplashScreen {
                 showSplash = false
@@ -84,13 +84,13 @@ fun MainAppContent(calculatorViewModel: CalculatorViewModel) {
         bottomBar = {
             Box(
                 modifier = Modifier
-                    .background(CosmicBackground)
+                    .background(MaterialTheme.colorScheme.background)
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 NavigationBar(
-                    containerColor = CosmicSurface,
-                    contentColor = CosmicText,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     tonalElevation = 0.dp,
                     modifier = Modifier
                         .height(64.dp)
@@ -126,11 +126,11 @@ fun MainAppContent(calculatorViewModel: CalculatorViewModel) {
                             },
                             label = { Text(label, fontSize = 11.sp, fontWeight = FontWeight.Medium) },
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = CosmicPrimary,
-                                unselectedIconColor = CosmicTextSecondary,
-                                selectedTextColor = CosmicPrimary,
-                                unselectedTextColor = CosmicTextSecondary,
-                                indicatorColor = CosmicSecondary
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                indicatorColor = MaterialTheme.colorScheme.secondaryContainer
                             )
                         )
                     }
@@ -141,7 +141,7 @@ fun MainAppContent(calculatorViewModel: CalculatorViewModel) {
         NavHost(
             navController = navController,
             startDestination = "calculator",
-            modifier = Modifier.padding(innerPadding).fillMaxSize().background(CosmicBackground)
+            modifier = Modifier.padding(innerPadding).fillMaxSize().background(MaterialTheme.colorScheme.background)
         ) {
             composable("calculator") { CalculatorScreen(calculatorViewModel) }
             composable("converter") { ConverterScreen() }

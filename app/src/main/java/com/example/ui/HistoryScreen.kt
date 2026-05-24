@@ -16,10 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.CosmicPrimary
-import com.example.ui.theme.CosmicSurface
-import com.example.ui.theme.CosmicText
-import com.example.ui.theme.CosmicTextSecondary
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -32,20 +28,20 @@ fun HistoryScreen(viewModel: CalculatorViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("История", color = CosmicText) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = com.example.ui.theme.CosmicBackground),
+                title = { Text("История", color = MaterialTheme.colorScheme.onBackground) },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
                 actions = {
                     IconButton(onClick = { viewModel.clearHistory() }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Очистить историю", tint = CosmicPrimary)
+                        Icon(Icons.Default.Delete, contentDescription = "Очистить историю", tint = MaterialTheme.colorScheme.primary)
                     }
                 }
             )
         },
-        containerColor = com.example.ui.theme.CosmicBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         if (history.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
-                Text("История пуста", color = CosmicTextSecondary)
+                Text("История пуста", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         } else {
             LazyColumn(
@@ -55,28 +51,28 @@ fun HistoryScreen(viewModel: CalculatorViewModel) {
             ) {
                 items(history) { calc ->
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = CosmicSurface),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                         shape = RoundedCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalAlignment = Alignment.End) {
                             Text(
                                 text = calc.expression,
-                                fontSize = 20.sp,
-                                color = CosmicTextSecondary
+                                fontSize = 18.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "= ${calc.result}",
-                                fontSize = 28.sp,
-                                color = CosmicPrimary,
+                                fontSize = 24.sp,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = formatTimestamp(calc.timestamp),
                                 fontSize = 12.sp,
-                                color = CosmicTextSecondary.copy(alpha = 0.5f)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                             )
                         }
                     }

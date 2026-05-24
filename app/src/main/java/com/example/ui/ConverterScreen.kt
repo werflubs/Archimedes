@@ -14,11 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.CosmicBackground
-import com.example.ui.theme.CosmicPrimary
-import com.example.ui.theme.CosmicSurface
-import com.example.ui.theme.CosmicText
-import com.example.ui.theme.CosmicTextSecondary
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -54,11 +49,11 @@ fun ConverterScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Конвертер", color = CosmicText) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = CosmicBackground)
+                title = { Text("Конвертер", color = MaterialTheme.colorScheme.onBackground) },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = CosmicBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -96,50 +91,50 @@ fun ConverterScreen() {
                 OutlinedTextField(
                     value = bill,
                     onValueChange = { bill = it },
-                    label = { Text("Сумма счета", color = CosmicTextSecondary) },
+                    label = { Text("Сумма счета", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = CosmicText,
-                        unfocusedTextColor = CosmicText,
-                        focusedBorderColor = CosmicPrimary,
-                        unfocusedBorderColor = CosmicTextSecondary
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
                     value = tipPercent,
                     onValueChange = { tipPercent = it },
-                    label = { Text("Процент чаевых (%)", color = CosmicTextSecondary) },
+                    label = { Text("Процент чаевых (%)", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = CosmicText,
-                        unfocusedTextColor = CosmicText,
-                        focusedBorderColor = CosmicPrimary,
-                        unfocusedBorderColor = CosmicTextSecondary
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
                     value = persons,
                     onValueChange = { persons = it },
-                    label = { Text("Количество персон", color = CosmicTextSecondary) },
+                    label = { Text("Количество персон", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = CosmicText,
-                        unfocusedTextColor = CosmicText,
-                        focusedBorderColor = CosmicPrimary,
-                        unfocusedBorderColor = CosmicTextSecondary
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
                 
-                Card(colors = CardDefaults.cardColors(containerColor = CosmicSurface), modifier = Modifier.fillMaxWidth()) {
+                Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant), modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Чаевые: ${formatResult(totalTip)}", color = CosmicText)
+                        Text("Чаевые: ${formatResult(totalTip)}", color = MaterialTheme.colorScheme.onSurface)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text("Итого: ${formatResult(totalBill)}", color = CosmicPrimary)
+                        Text("Итого: ${formatResult(totalBill)}", color = MaterialTheme.colorScheme.primary)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text("На человека: ${formatResult(perPerson)}", color = CosmicText)
+                        Text("На человека: ${formatResult(perPerson)}", color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
             } else {
@@ -162,7 +157,7 @@ fun ConverterScreen() {
                         Icon(
                             imageVector = Icons.Default.SwapHoriz,
                             contentDescription = "Поменять местами",
-                            tint = CosmicPrimary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Box(modifier = Modifier.weight(1f)) {
@@ -173,13 +168,13 @@ fun ConverterScreen() {
                 OutlinedTextField(
                     value = inputValue,
                     onValueChange = { inputValue = it },
-                    label = { Text("Ввод", color = CosmicTextSecondary) },
+                    label = { Text("Ввод", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = CosmicText,
-                        unfocusedTextColor = CosmicText,
-                        focusedBorderColor = CosmicPrimary,
-                        unfocusedBorderColor = CosmicTextSecondary
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -188,12 +183,12 @@ fun ConverterScreen() {
                     value = outputValue,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Результат", color = CosmicTextSecondary) },
+                    label = { Text("Результат", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = CosmicPrimary,
-                        unfocusedTextColor = CosmicPrimary,
-                        focusedBorderColor = CosmicPrimary,
-                        unfocusedBorderColor = CosmicTextSecondary
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -221,24 +216,24 @@ fun DropdownMenuSelector(label: String, items: List<String>, selected: String, o
             value = selected,
             onValueChange = {},
             readOnly = true,
-            label = { Text(label, color = CosmicTextSecondary) },
+            label = { Text(label, color = MaterialTheme.colorScheme.onSurfaceVariant) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = CosmicText,
-                unfocusedTextColor = CosmicText,
-                focusedBorderColor = CosmicPrimary,
-                unfocusedBorderColor = CosmicTextSecondary
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
             modifier = Modifier.menuAnchor().fillMaxWidth()
         )
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.background(CosmicSurface)
+            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(item, color = CosmicText) },
+                    text = { Text(item, color = MaterialTheme.colorScheme.onSurface) },
                     onClick = {
                         onSelected(item)
                         expanded = false

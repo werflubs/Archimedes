@@ -43,29 +43,31 @@ fun CalculatorScreen(viewModel: CalculatorViewModel) {
             Text(
                 text = expression,
                 fontSize = 18.sp,
-                color = CosmicTextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 lineHeight = 24.sp,
                 textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 3
             )
             Spacer(modifier = Modifier.height(8.dp))
             
             val displayText = result.ifEmpty { expression.ifEmpty { "0" } }
             val displayFontSize = when {
-                displayText.length > 18 -> 26.sp
-                displayText.length > 14 -> 34.sp
-                displayText.length > 10 -> 42.sp
-                else -> 52.sp
+                displayText.length > 18 -> 22.sp
+                displayText.length > 14 -> 28.sp
+                displayText.length > 10 -> 36.sp
+                else -> 46.sp
             }
             
             Text(
                 text = displayText,
                 fontSize = displayFontSize,
-                fontWeight = FontWeight.Normal,
-                color = androidx.compose.ui.graphics.Color.White,
-                lineHeight = (displayFontSize.value * 1.2f).sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
+                lineHeight = (displayFontSize.value * 1.15f).sp,
                 textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 2
             )
         }
 
@@ -102,17 +104,17 @@ fun CalculatorButton(text: String, onClick: () -> Unit) {
     val isTertiary = text == "C"
 
     val bgColor = when {
-        isPrimary -> CosmicPrimary
-        isSecondary -> CosmicSecondary
-        isTertiary -> CosmicTertiary
-        else -> CosmicSurface
+        isPrimary -> MaterialTheme.colorScheme.primary
+        isSecondary -> MaterialTheme.colorScheme.secondary
+        isTertiary -> MaterialTheme.colorScheme.tertiary
+        else -> MaterialTheme.colorScheme.surface
     }
     
     val textColor = when {
-        isPrimary -> CosmicOnPrimary
-        isSecondary -> CosmicOnSecondary
-        isTertiary -> CosmicOnTertiary
-        else -> androidx.compose.ui.graphics.Color.White
+        isPrimary -> MaterialTheme.colorScheme.onPrimary
+        isSecondary -> MaterialTheme.colorScheme.onSecondary
+        isTertiary -> MaterialTheme.colorScheme.onTertiary
+        else -> MaterialTheme.colorScheme.onSurface
     }
 
     Box(
