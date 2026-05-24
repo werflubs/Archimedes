@@ -1,5 +1,11 @@
 package com.example.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -40,15 +46,25 @@ fun CalculatorScreen(viewModel: CalculatorViewModel) {
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.End
         ) {
-            Text(
-                text = expression,
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                lineHeight = 24.sp,
-                textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 3
-            )
+            AnimatedContent(
+                targetState = expression,
+                transitionSpec = {
+                    (fadeIn() + slideInVertically { it / 4 }).togetherWith(
+                        fadeOut() + slideOutVertically { -it / 4 }
+                    )
+                },
+                label = "expressionAnim"
+            ) { targetExpr ->
+                Text(
+                    text = targetExpr,
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    lineHeight = 24.sp,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             
             val displayText = result.ifEmpty { expression.ifEmpty { "0" } }
@@ -59,16 +75,26 @@ fun CalculatorScreen(viewModel: CalculatorViewModel) {
                 else -> 46.sp
             }
             
-            Text(
-                text = displayText,
-                fontSize = displayFontSize,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-                lineHeight = (displayFontSize.value * 1.15f).sp,
-                textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 2
-            )
+            AnimatedContent(
+                targetState = displayText,
+                transitionSpec = {
+                    (fadeIn() + slideInVertically { it / 4 }).togetherWith(
+                        fadeOut() + slideOutVertically { -it / 4 }
+                    )
+                },
+                label = "resultAnim"
+            ) { targetText ->
+                Text(
+                    text = targetText,
+                    fontSize = displayFontSize,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    lineHeight = (displayFontSize.value * 1.15f).sp,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 2
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
