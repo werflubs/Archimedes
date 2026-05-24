@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,8 +18,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.CosmicBackground
-import com.example.ui.theme.CosmicPrimary
 import kotlinx.coroutines.delay
 
 @Composable
@@ -46,13 +45,13 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(CosmicBackground),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         androidx.compose.foundation.layout.Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = "Archimedes",
-                color = CosmicPrimary,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 42.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -62,7 +61,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             androidx.compose.foundation.layout.Spacer(modifier = Modifier.padding(8.dp))
             Text(
                 text = "cosmic scale calculations",
-                color = com.example.ui.theme.CosmicTextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Light,
                 modifier = Modifier.alpha(alpha.value)

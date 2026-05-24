@@ -78,12 +78,20 @@ fun AboutScreen() {
                                 .size(32.dp)
                                 .background(
                                     brush = Brush.linearGradient(
-                                        colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
+                                        colors = listOf(
+                                            MaterialTheme.colorScheme.primary,
+                                            MaterialTheme.colorScheme.primaryContainer
+                                        )
                                     ),
                                     shape = RoundedCornerShape(12.dp)
                                 )
                         ) {
-                            Text("ARC", fontSize = 8.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                            Text(
+                                text = "ARC",
+                                fontSize = 8.sp,
+                                fontWeight = FontWeight.Black,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
                         }
                     }
                     

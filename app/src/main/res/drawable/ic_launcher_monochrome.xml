@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Outer circular boundary for a highly polished look -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 54 18 C 34.12 18 18 34.12 18 54 C 18 73.88 34.12 90 54 90 C 73.88 90 90 73.88 90 54 C 90 34.12 73.88 18 54 18 Z M 54 22 C 71.67 22 86 36.33 86 54 C 86 71.67 71.67 86 54 86 C 36.33 86 22 71.67 22 54 C 22 36.33 36.33 22 54 22 Z" />
+        
+    <!-- Stylized calculator / mathematical computing container -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 38 34 H 70 C 72.2 34 74 35.8 74 38 V 70 C 74 72.2 72.2 74 70 74 H 38 C 35.8 74 34 72.2 34 70 V 38 C 34 35.8 35.8 34 38 34 Z M 38 38 V 44 H 70 V 38 H 38 Z M 38 48 V 70 H 70 V 48 H 38 Z" />
+        
+    <!-- Premium UI glyph sub-elements inside the calculator base -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 42 52 H 48 V 58 H 42 Z M 52 52 H 58 V 58 H 52 Z M 62 52 H 68 V 58 H 62 Z M 42 62 H 48 V 68 H 42 Z M 52 62 H 68 V 68 H 52 Z" />
+</vector>
