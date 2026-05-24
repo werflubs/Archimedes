@@ -1,0 +1,6 @@
+{
+  "name": "Archimedes",
+  "description": "Cosmic scale calculations and conversions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
