@@ -9,7 +9,7 @@ object MathUtils {
             val tokens = tokenize(expression.replace(" ", "").replace("×", "*").replace("÷", "/"))
             val result = parseExpression(tokens)
             formatResult(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             "Error"
         }
     }

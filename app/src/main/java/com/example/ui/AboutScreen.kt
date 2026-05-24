@@ -107,7 +107,12 @@ fun AboutScreen() {
                             append("werflub")
                         }
                         pop()
-                        append(".")
+                        append(".\n")
+                        pushStringAnnotation(tag = "URL", annotation = "https://github.com/werflubs/Archimedes")
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary, textDecoration = TextDecoration.Underline)) {
+                            append("Репозиторий GitHub")
+                        }
+                        pop()
                     }
                     
                     ClickableText(

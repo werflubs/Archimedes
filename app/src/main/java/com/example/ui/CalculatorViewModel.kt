@@ -68,7 +68,7 @@ class CalculatorViewModel(
                         if (lastChar in operators) {
                             _expression.value += "0."
                         } else if (lastChar != ".") {
-                            val lastNumber = exp.split(Regex("[÷×\\-+%]")).last()
+                            val lastNumber = exp.split('÷', '×', '-', '+', '%').last()
                             if (!lastNumber.contains(".")) {
                                 _expression.value += action
                             }
