@@ -1,56 +1,59 @@
 package com.example.util
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.regex.Pattern
 
 object CurrencyFetcher {
     private val ratesCache = mutableMapOf<String, Double>()
+    private var lastFetchTime = 0L
+    private val cacheDuration = 1000 * 60 * 60 // 1 hour
 
     suspend fun getRate(from: String, to: String): Double? = withContext(Dispatchers.IO) {
         val pair = "${from}-${to}"
-        if (ratesCache.containsKey(pair)) {
+        val now = System.currentTimeMillis()
+        
+        if (ratesCache.containsKey(pair) && now - lastFetchTime < cacheDuration) {
             return@withContext ratesCache[pair]
         }
         
         try {
-            val url = URL("https://www.google.com/finance/quote/$from-$to")
+            val urlStr = "https://open.er-api.com/v6/latest/\$from"
+            Log.d("CurrencyFetcher", "Fetching: \$urlStr")
+            val url = URL(urlStr)
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0")
-            connection.connectTimeout = 5000
-            connection.readTimeout = 5000
+            connection.connectTimeout = 10000
+            connection.readTimeout = 10000
 
-            if (connection.responseCode == 200) {
-                val html = connection.inputStream.bufferedReader().readText()
-                
-                // Try data-last-price first
-                val pattern = Pattern.compile("data-last-price=\"([0-9.]+)\"")
-                val matcher = pattern.matcher(html)
-                if (matcher.find()) {
-                    val rate = matcher.group(1)?.toDoubleOrNull()
-                    if (rate != null) {
+            val responseCode = connection.responseCode
+            Log.d("CurrencyFetcher", "Response code: \$responseCode")
+            
+            if (responseCode == 200) {
+                val jsonStr = connection.inputStream.bufferedReader().readText()
+                val json = JSONObject(jsonStr)
+                if (json.getString("result") == "success") {
+                    val rates = json.getJSONObject("rates")
+                    if (rates.has(to)) {
+                        val rate = rates.getDouble(to)
+                        Log.d("CurrencyFetcher", "Found rate for \$pair: \$rate")
                         ratesCache[pair] = rate
+                        lastFetchTime = now
                         return@withContext rate
+                    } else {
+                        Log.e("CurrencyFetcher", "Rate for \$to not found in response")
                     }
+                } else {
+                    Log.e("CurrencyFetcher", "API error: " + json.optString("error-type"))
                 }
-                
-                // Fallback to div with class YMlKec fxKbKc
-                val fallbackPattern = Pattern.compile("class=\"YMlKec fxKbKc\">([^<]+)</div>")
-                val fallbackMatcher = fallbackPattern.matcher(html)
-                if (fallbackMatcher.find()) {
-                    val rateStr = fallbackMatcher.group(1)?.replace(",", "")
-                    val rate = rateStr?.toDoubleOrNull()
-                    if (rate != null) {
-                        ratesCache[pair] = rate
-                        return@withContext rate
-                    }
-                }
+            } else {
+                Log.e("CurrencyFetcher", "Error response: \$responseCode")
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("CurrencyFetcher", "Exception: \${e.message}", e)
         }
         null
     }
