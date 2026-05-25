@@ -17,11 +17,12 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 val categories = listOf(
-    "Площадь", "Длина", "Температура", "Объем", "Масса",
+    "Валюта", "Площадь", "Длина", "Температура", "Объем", "Масса",
     "Данные", "Скорость", "Время", "Чаевые"
 )
 
 val unitsMap = mapOf(
+    "Валюта" to listOf("RUB", "USD", "EUR", "CNY", "KZT", "GBP", "JPY", "TRY", "BYN", "UAH"),
     "Площадь" to listOf("Кв. Метры", "Кв. Километры", "Акр", "Гектар"),
     "Длина" to listOf("Метры", "Километры", "Сантиметры", "Миллиметры", "Миля"),
     "Температура" to listOf("Цельсий", "Фаренгейт", "Кельвин"),
@@ -40,9 +41,24 @@ fun ConverterScreen() {
     var selectedUnitFrom by remember { mutableStateOf(unitsMap[selectedCategory]!![0]) }
     var selectedUnitTo by remember { mutableStateOf(unitsMap[selectedCategory]!![1]) }
     var inputValue by remember { mutableStateOf("") }
+    var currencyRate by remember { mutableStateOf<Double?>(null) }
+    var isFetchingRate by remember { mutableStateOf(false) }
     
-    val outputValue = remember(inputValue, selectedCategory, selectedUnitFrom, selectedUnitTo) {
-        convert(inputValue, selectedCategory, selectedUnitFrom, selectedUnitTo)
+    LaunchedEffect(selectedCategory, selectedUnitFrom, selectedUnitTo) {
+        if (selectedCategory == "Валюта") {
+            isFetchingRate = true
+            currencyRate = null
+            if (selectedUnitFrom == selectedUnitTo) {
+                currencyRate = 1.0
+            } else {
+                currencyRate = com.example.util.CurrencyFetcher.getRate(selectedUnitFrom, selectedUnitTo)
+            }
+            isFetchingRate = false
+        }
+    }
+    
+    val outputValue = remember(inputValue, selectedCategory, selectedUnitFrom, selectedUnitTo, currencyRate, isFetchingRate) {
+        convert(inputValue, selectedCategory, selectedUnitFrom, selectedUnitTo, currencyRate, isFetchingRate)
     }
 
     Scaffold(
@@ -243,8 +259,18 @@ fun DropdownMenuSelector(label: String, items: List<String>, selected: String, o
     }
 }
 
-private fun convert(valueStr: String, category: String, from: String, to: String): String {
+private fun convert(valueStr: String, category: String, from: String, to: String, currencyRate: Double? = null, isFetchingRate: Boolean = false): String {
     val param = valueStr.toDoubleOrNull() ?: return ""
+    
+    if (category == "Валюта") {
+        if (isFetchingRate) return "Обновление..."
+        if (currencyRate != null) {
+            return formatResult(param * currencyRate)
+        } else {
+            return "Ошибка сети"
+        }
+    }
+    
     if (from == to) return formatResult(param)
     
     val baseValue = when (category) {
