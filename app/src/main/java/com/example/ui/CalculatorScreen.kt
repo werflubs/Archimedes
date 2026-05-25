@@ -28,97 +28,143 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.*
 
+import androidx.compose.ui.platform.LocalConfiguration
+import android.content.res.Configuration
+
 @Composable
 fun CalculatorScreen(viewModel: CalculatorViewModel) {
     val expression by viewModel.expression.collectAsState()
     val result by viewModel.result.collectAsState()
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Bottom
-    ) {
+    if (isLandscape) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            CalculatorDisplay(
+                expression = expression,
+                result = result,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+            
+            CalculatorKeypad(
+                viewModel = viewModel,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+        }
+    } else {
         Column(
             modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.End
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Bottom
         ) {
-            AnimatedContent(
-                targetState = expression,
-                transitionSpec = {
-                    (fadeIn() + slideInVertically { it / 4 }).togetherWith(
-                        fadeOut() + slideOutVertically { -it / 4 }
-                    )
-                },
-                label = "expressionAnim"
-            ) { targetExpr ->
-                Text(
-                    text = targetExpr,
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 24.sp,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth(),
-                    maxLines = 3
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            val displayText = result.ifEmpty { expression.ifEmpty { "0" } }
-            val displayFontSize = when {
-                displayText.length > 18 -> 22.sp
-                displayText.length > 14 -> 28.sp
-                displayText.length > 10 -> 36.sp
-                else -> 46.sp
-            }
-            
-            AnimatedContent(
-                targetState = displayText,
-                transitionSpec = {
-                    (fadeIn() + slideInVertically { it / 4 }).togetherWith(
-                        fadeOut() + slideOutVertically { -it / 4 }
-                    )
-                },
-                label = "resultAnim"
-            ) { targetText ->
-                Text(
-                    text = targetText,
-                    fontSize = displayFontSize,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    lineHeight = (displayFontSize.value * 1.15f).sp,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth(),
-                    maxLines = 2
-                )
-            }
+            CalculatorDisplay(
+                expression = expression,
+                result = result,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            )
+    
+            Spacer(modifier = Modifier.height(24.dp))
+    
+            CalculatorKeypad(
+                viewModel = viewModel,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
+    }
+}
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        val buttons = listOf(
-            "C", "⌫", "%", "÷",
-            "7", "8", "9", "×",
-            "4", "5", "6", "-",
-            "1", "2", "3", "+",
-            "00", "0", ".", "="
-        )
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(4),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(buttons) { btn ->
-                CalculatorButton(
-                    text = btn,
-                    onClick = { viewModel.onAction(btn) }
+@Composable
+fun CalculatorDisplay(expression: String, result: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.End
+    ) {
+        AnimatedContent(
+            targetState = expression,
+            transitionSpec = {
+                (fadeIn() + slideInVertically { it / 4 }).togetherWith(
+                    fadeOut() + slideOutVertically { -it / 4 }
                 )
-            }
+            },
+            label = "expressionAnim"
+        ) { targetExpr ->
+            Text(
+                text = targetExpr,
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                lineHeight = 24.sp,
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 3
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        val displayText = result.ifEmpty { expression.ifEmpty { "0" } }
+        val displayFontSize = when {
+            displayText.length > 18 -> 22.sp
+            displayText.length > 14 -> 28.sp
+            displayText.length > 10 -> 36.sp
+            else -> 46.sp
+        }
+        
+        AnimatedContent(
+            targetState = displayText,
+            transitionSpec = {
+                (fadeIn() + slideInVertically { it / 4 }).togetherWith(
+                    fadeOut() + slideOutVertically { -it / 4 }
+                )
+            },
+            label = "resultAnim"
+        ) { targetText ->
+            Text(
+                text = targetText,
+                fontSize = displayFontSize,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
+                lineHeight = (displayFontSize.value * 1.15f).sp,
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 2
+            )
+        }
+    }
+}
+
+@Composable
+fun CalculatorKeypad(viewModel: CalculatorViewModel, modifier: Modifier = Modifier) {
+    val buttons = listOf(
+        "C", "⌫", "%", "÷",
+        "7", "8", "9", "×",
+        "4", "5", "6", "-",
+        "1", "2", "3", "+",
+        "00", "0", ".", "="
+    )
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(4),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier
+    ) {
+        items(buttons) { btn ->
+            CalculatorButton(
+                text = btn,
+                onClick = { viewModel.onAction(btn) }
+            )
         }
     }
 }
