@@ -66,7 +66,7 @@ fun AboutScreen() {
                                 letterSpacing = 1.sp
                             )
                             Text(
-                                "v1.1.0 • Kotlin • Jetpack Compose",
+                                "v1.2.0 • Kotlin • Jetpack Compose",
                                 fontSize = 10.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -125,7 +125,11 @@ fun AboutScreen() {
                         onClick = { offset ->
                             annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
                                 .firstOrNull()?.let { annotation ->
-                                    uriHandler.openUri(annotation.item)
+                                    try {
+                                        uriHandler.openUri(annotation.item)
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
                                 }
                         }
                     )

@@ -105,8 +105,12 @@ fun MainAppContent(calculatorViewModel: CalculatorViewModel) {
             confirmButton = {
                 TextButton(onClick = {
                     showUpdateDialog = false
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo!!.releaseUrl))
-                    context.startActivity(intent)
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo!!.releaseUrl))
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }) {
                     Text("Обновить")
                 }
