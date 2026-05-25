@@ -21,13 +21,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import android.content.Intent
+import android.net.Uri
+import com.example.util.UpdateChecker
+import com.example.util.UpdateInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -75,6 +83,40 @@ fun MainAppContent(calculatorViewModel: CalculatorViewModel) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    
+    var updateInfo by remember { mutableStateOf<UpdateInfo?>(null) }
+    var showUpdateDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        val info = UpdateChecker.checkForUpdates()
+        if (info != null && info.isUpdateAvailable) {
+            updateInfo = info
+            showUpdateDialog = true
+        }
+    }
+
+    if (showUpdateDialog && updateInfo != null) {
+        AlertDialog(
+            onDismissRequest = { showUpdateDialog = false },
+            title = { Text("Доступно обновление") },
+            text = { Text("Найдена новая версия Архимеда (${updateInfo!!.latestVersion}). Хотите обновить приложение?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showUpdateDialog = false
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo!!.releaseUrl))
+                    context.startActivity(intent)
+                }) {
+                    Text("Обновить")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showUpdateDialog = false }) {
+                    Text("Позже")
+                }
+            }
+        )
+    }
 
     Scaffold(
         bottomBar = {
