@@ -207,6 +207,16 @@ fun ConverterScreen() {
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
+                
+                if (selectedCategory == "Валюта") {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Информация взята из Google Финансы",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
             }
         }
     }
